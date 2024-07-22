@@ -2,26 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
+        stage('Test Docker') {
             steps {
                 script {
-                    docker.image('composer:latest').inside {
-                        sh 'composer install'
-                    }
+                    sh 'docker --version'
+                    sh 'docker info'
                 }
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Your build steps go here
-                echo 'Building...'
             }
         }
     }
