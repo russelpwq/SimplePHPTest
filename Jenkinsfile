@@ -1,16 +1,28 @@
 pipeline {
-    	agent any  // This specifies that the pipeline can run on any available agent
+    agent any
 
-	stages {
-		stage('Build') {
-			steps {
-				sh 'composer install'
-			}
-		}
-		stage('Test') {
-			steps {
-                sh './vendor/bin/phpunit tests'
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
-		}
-	}
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    docker.image('composer:latest').inside {
+                        sh 'composer install'
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Your build steps go here
+                echo 'Building...'
+            }
+        }
+    }
 }
